@@ -293,20 +293,20 @@
           alt="Safetypro"
         />
         <span class="brand-divider" aria-hidden="true"></span>
-        <span class="brand-label">Portal de Dashboards</span>
+        <span id="org-label" class="brand-label">Organización</span>
       </a>
 
       <span class="status-pill">
         <span class="status-dot"></span>
-        GitHub Sync
+        GitHub Org Sync
       </span>
     </div>
   </header>
 
   <main class="container">
     <section class="hero">
-      <h1>Dashboards y Proyectos</h1>
-      <p>Acceso rápido a los repositorios publicados desde GitHub Pages.</p>
+      <h1 id="hero-title">Dashboards de la Organización</h1>
+      <p>Acceso directo a los repositorios publicados en GitHub Pages.</p>
     </section>
 
     <section class="toolbar" aria-label="Filtrar proyectos">
@@ -321,13 +321,19 @@
     </section>
 
     <section id="repos-grid" class="grid" aria-live="polite">
-      <div class="state-box">Cargando repositorios desde GitHub...</div>
+      <div class="state-box">Cargando repositorios de la organización...</div>
     </section>
   </main>
 
   <script>
-    const API_URL = "https://api.github.com/users/hp1crmserver/repos?per_page=100&sort=updated";
-    const ROOT_REPO = "hp1crmserver.github.io";
+    // Cambia este valor por el nombre exacto de tu organización en GitHub:
+    const ORG_NAME = "NOMBRE_DE_TU_ORGANIZACION";
+
+    const API_URL = `https://api.github.com/orgs/${ORG_NAME}/repos?per_page=100&sort=updated`;
+    const ROOT_REPO = `${ORG_NAME}.github.io`;
+
+    document.getElementById("org-label").textContent = ORG_NAME;
+    document.getElementById("hero-title").textContent = `Dashboards | ${ORG_NAME}`;
 
     let allRepos = [];
 
@@ -380,8 +386,12 @@
       const countEl = document.getElementById("repo-count");
 
       try {
+        if (!ORG_NAME || ORG_NAME === "NOMBRE_DE_TU_ORGANIZACION") {
+          throw new Error("Configura ORG_NAME con el nombre de tu organización en GitHub");
+        }
+
         const res = await fetch(API_URL);
-        if (!res.ok) throw new Error("No se pudo consultar la API de GitHub");
+        if (!res.ok) throw new Error("No se pudieron obtener los repositorios de la organización");
         const repos = await res.json();
 
         allRepos = repos.filter(
