@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dashboards | Safetypro</title>
+  <title>Dashboards | Safetypro Panamá</title>
   <style>
     :root {
       --green: #039935;
@@ -293,20 +293,20 @@
           alt="Safetypro"
         />
         <span class="brand-divider" aria-hidden="true"></span>
-        <span id="org-label" class="brand-label">Organización</span>
+        <span class="brand-label">safetypro-pa</span>
       </a>
 
       <span class="status-pill">
         <span class="status-dot"></span>
-        GitHub Org Sync
+        safetypro-pa.github.io
       </span>
     </div>
   </header>
 
   <main class="container">
     <section class="hero">
-      <h1 id="hero-title">Dashboards de la Organización</h1>
-      <p>Acceso directo a los repositorios publicados en GitHub Pages.</p>
+      <h1>Dashboards | Safetypro</h1>
+      <p>Portal centralizado de herramientas y paneles publicados en GitHub Pages.</p>
     </section>
 
     <section class="toolbar" aria-label="Filtrar proyectos">
@@ -321,19 +321,14 @@
     </section>
 
     <section id="repos-grid" class="grid" aria-live="polite">
-      <div class="state-box">Cargando repositorios de la organización...</div>
+      <div class="state-box">Cargando repositorios de safetypro-pa...</div>
     </section>
   </main>
 
   <script>
-    // Cambia este valor por el nombre exacto de tu organización en GitHub:
     const ORG_NAME = "safetypro-pa";
-
-    const API_URL = `https://api.github.com/orgs/${safetypro-pa}/repos?per_page=100&sort=updated`;
-    const ROOT_REPO = `${safetypro-pa}.github.io`;
-
-    document.getElementById("org-label").textContent = safetypro-pa;
-    document.getElementById("hero-title").textContent = `Dashboards | ${safetypro-pa}`;
+    const API_URL = `https://api.github.com/orgs/${ORG_NAME}/repos?per_page=100&sort=updated`;
+    const ROOT_REPO = "safetypro-pa.github.io";
 
     let allRepos = [];
 
@@ -344,7 +339,7 @@
       countEl.textContent = `${list.length} ${list.length === 1 ? "proyecto" : "proyectos"}`;
 
       if (list.length === 0) {
-        grid.innerHTML = `<div class="state-box">No se encontraron repositorios que coincidan con la búsqueda.</div>`;
+        grid.innerHTML = `<div class="state-box">No hay proyectos públicos adicionales en safetypro-pa o no coinciden con la búsqueda.</div>`;
         return;
       }
 
@@ -356,7 +351,7 @@
 
         const descHtml = repo.description
           ? `<div class="card-desc">${escapeHtml(repo.description)}</div>`
-          : `<div class="card-desc">Proyecto publicado en subruta de GitHub Pages.</div>`;
+          : `<div class="card-desc">Herramienta publicada en safetypro-pa.github.io/${escapeHtml(repo.name)}/</div>`;
 
         card.innerHTML = `
           <div>
@@ -367,7 +362,7 @@
             ${descHtml}
           </div>
           <div class="card-footer">
-            <span class="card-url">./${escapeHtml(repo.name)}/</span>
+            <span class="card-url">safetypro-pa.github.io/${escapeHtml(repo.name)}/</span>
             <span class="card-tag">${repo.language ? escapeHtml(repo.language) : "Web"}</span>
           </div>
         `;
@@ -386,12 +381,8 @@
       const countEl = document.getElementById("repo-count");
 
       try {
-        if (!ORG_NAME || ORG_NAME === "NOMBRE_DE_TU_ORGANIZACION") {
-          throw new Error("Configura ORG_NAME con el nombre de tu organización en GitHub");
-        }
-
         const res = await fetch(API_URL);
-        if (!res.ok) throw new Error("No se pudieron obtener los repositorios de la organización");
+        if (!res.ok) throw new Error("No se pudieron obtener los repositorios de safetypro-pa");
         const repos = await res.json();
 
         allRepos = repos.filter(
